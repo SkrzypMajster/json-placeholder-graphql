@@ -2,7 +2,11 @@
   "name": "json-placeholder-graphql",
   "version": "1.0.0",
   "description": "GraphQL API with TypeScript based on collections from JSON Placeholder REST API",
-  "main": "index.js",
+  "type": "module",
+  "exports": "./index.js",
+  "engines": {
+    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
+  },
   "scripts": {
     "start": "node build/index.js",
     "dev": "nodemon",
@@ -46,6 +50,7 @@
   },
   "dependencies": {
     "dotenv": "16.0.0",
-    "express": "4.17.2"
+    "express": "4.17.2",
+    "lowdb": "3.0.0"
   }
 }
