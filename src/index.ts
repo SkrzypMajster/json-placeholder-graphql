@@ -1,5 +1,6 @@
-import express, { Application, Request, Response } from 'express';
+import express, { Application, Request, Response, NextFunction } from 'express';
 import { config as loadEnvironmentVariables } from 'dotenv';
+import { createInMemoryDatabase } from './database.js';
 
 loadEnvironmentVariables();
 
@@ -7,9 +8,12 @@ loadEnvironmentVariables();
 const app: Application = express();
 const { PORT } = process.env;
 
+// Setup In-memory database
+const db = createInMemoryDatabase();
+
 // Application routing
-app.use('/', (_req: Request, res: Response ) => {
-    res.status(200).send({data: 'Hello World!'});
+app.use('/', (req: Request, res: Response, next: NextFunction) => {
+  res.status(200).send({ data: 'Hello from Ornio AS' });
 });
 
 // Start server
