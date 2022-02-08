@@ -2,7 +2,7 @@ import express, { Application } from 'express';
 import { graphqlHTTP } from 'express-graphql';
 import { config as loadEnvironmentVariables } from 'dotenv';
 
-import { createInMemoryDatabase } from './database.js';
+import { createInMemoryDatabase, createRepository } from './database.js';
 import { schema } from './graphql/schema.js';
 
 loadEnvironmentVariables();
@@ -15,8 +15,10 @@ loadEnvironmentVariables();
   // Setup In-memory database
   const db = await createInMemoryDatabase();
 
+  const repository = createRepository(db);
+
   // GraphQL initialization
-  app.use('/graphql', graphqlHTTP({ schema, graphiql: true, context: { db } }));
+  app.use('/graphql', graphqlHTTP({ schema, graphiql: true, context: { repository } }));
 
   // Start server
   app.listen(PORT, () => console.log(`Server is listening on port ${PORT}!`));
