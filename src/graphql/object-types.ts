@@ -92,7 +92,7 @@ export const UserType = new GraphQLObjectType({
   }),
 });
 
-export const AddUserPayloadType = new GraphQLInputObjectType({
+export const MutateUserInputType = new GraphQLInputObjectType({
   name: 'AddUserPayload',
   fields: () => ({
     name: { type: new GraphQLNonNull(GraphQLString) },
