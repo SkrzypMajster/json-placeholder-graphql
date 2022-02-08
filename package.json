@@ -10,6 +10,9 @@
   "scripts": {
     "start": "node build/index.js",
     "dev": "nodemon",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "npm run lint -- --fix",
+    "format": "prettier --write '**/*.ts'",
     "build": "tsc",
     "test": "jest"
   },
