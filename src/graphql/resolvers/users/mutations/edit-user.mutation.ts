@@ -1,5 +1,4 @@
 import { MutationContext } from '../../index.js';
-import { UsersRepository } from '../../../../repository/index.js';
 
 type EditUserMutationArgs = {
   id: number;
@@ -11,6 +10,6 @@ export const editUserMutation = async (
   { id, user }: EditUserMutationArgs,
   { repository }: MutationContext
 ) => {
-  const usersRepository = repository.users as UsersRepository;
+  const usersRepository = repository.users;
   return await usersRepository.update(id, user);
 };

@@ -1,4 +1,5 @@
 import { Resolvers } from '../types/index.js';
+import { Repositories } from '../../database.js';
 import { getUserQuery } from './users/queries/get-user.query.js';
 import { getUsersQuery } from './users/queries/get-users.query.js';
 import { getPostQuery } from './posts/queries/get-post.query.js';
@@ -13,11 +14,11 @@ import { getUserPostsQuery } from './users/queries/get-user-posts.query.js';
 import { getPostCreatorQuery } from './posts/queries/get-post-creator.query.js';
 
 export type MutationContext = {
-  repository: any;
+  repository: Repositories;
 };
 
 export type QueryContext = {
-  repository: any;
+  repository: Repositories;
 };
 
 // Provide resolver functions for your schema fields

@@ -1,5 +1,4 @@
 import { MutationContext } from '../../index.js';
-import { PostsRepository } from '../../../../repository/index.js';
 
 type RemovePostMutationArgs = {
   id: number;
@@ -10,6 +9,6 @@ export const removePostMutation = async (
   { id }: RemovePostMutationArgs,
   { repository }: MutationContext
 ) => {
-  const postsRepository = repository.posts as PostsRepository;
+  const postsRepository = repository.posts;
   return await postsRepository.remove(id);
 };
