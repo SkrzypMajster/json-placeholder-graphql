@@ -1,8 +1,8 @@
 import { GraphQLSchema, GraphQLObjectType, GraphQLList, GraphQLInt, GraphQLNonNull } from 'graphql';
-import { User } from 'integration/json-placeholder/json-placeholder.types.js';
+import { Post, User } from 'integration/json-placeholder/json-placeholder.types.js';
 
-import { UsersRepository } from '../repository/user.repository.js';
-import { AddUserPayloadType, UserType } from './object-types.js';
+import { PostsRepository, UsersRepository } from '../repository/index.js';
+import { AddUserPayloadType, MutatePostInputType, PostType, UserType } from './object-types.js';
 
 const RootQueryType = new GraphQLObjectType({
   name: 'Query',
@@ -25,6 +25,25 @@ const RootQueryType = new GraphQLObjectType({
       resolve: (_parent, args: { id: number }, context) => {
         const usersRepository = context.repository.users as UsersRepository;
         return usersRepository.find(args.id);
+      },
+    },
+    posts: {
+      type: new GraphQLList(PostType),
+      description: 'List of all posts',
+      resolve: (_parent, _args, context) => {
+        const postsRepository = context.repository.posts as PostsRepository;
+        return postsRepository.getList();
+      },
+    },
+    post: {
+      type: PostType,
+      description: 'A single post',
+      args: {
+        id: { type: GraphQLInt },
+      },
+      resolve: (_parent, args: { id: number }, context) => {
+        const postsRepository = context.repository.posts as PostsRepository;
+        return postsRepository.find(args.id);
       },
     },
   }),
@@ -66,6 +85,40 @@ const RootMutationType = new GraphQLObjectType({
       resolve: async (_user, { id }: { id: number }, context) => {
         const usersRepository = context.repository.users as UsersRepository;
         return await usersRepository.remove(id);
+      },
+    },
+    addPost: {
+      type: PostType,
+      description: 'Add a post',
+      args: {
+        post: { type: new GraphQLNonNull(MutatePostInputType) },
+      },
+      resolve: async (_post, { post }: { post: Omit<Post, 'id'> }, context) => {
+        const postsRepository = context.repository.posts as PostsRepository;
+        return await postsRepository.insert(post);
+      },
+    },
+    editPost: {
+      type: PostType,
+      description: 'Edit a post',
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLInt) },
+        post: { type: new GraphQLNonNull(MutatePostInputType) },
+      },
+      resolve: async (_post, { id, post }: { id: number; post: Omit<Post, 'id'> }, context) => {
+        const postsRepository = context.repository.posts as PostsRepository;
+        return await postsRepository.update(id, post);
+      },
+    },
+    removePost: {
+      type: PostType,
+      description: 'Remove post',
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLInt) },
+      },
+      resolve: async (_user, { id }: { id: number }, context) => {
+        const postsRepository = context.repository.posts as PostsRepository;
+        return await postsRepository.remove(id);
       },
     },
   }),
