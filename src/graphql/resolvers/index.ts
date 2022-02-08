@@ -12,6 +12,12 @@ import { editPostMutation } from './posts/mutations/edit-post.mutation.js';
 import { removePostMutation } from './posts/mutations/remove-post.mutation.js';
 import { getUserPostsQuery } from './users/queries/get-user-posts.query.js';
 import { getPostCreatorQuery } from './posts/queries/get-post-creator.query.js';
+import { getCommentQuery } from './comments/queries/get-comment.query.js';
+import { getCommentsQuery } from './comments/queries/get-comments.query.js';
+import { getCommentPostQuery } from './comments/queries/get-comment-post.query.js';
+import { addCommentMutation } from './comments/mutations/add-comment.mutation.js';
+import { editCommentMutation } from './comments/mutations/edit-comment.mutation.js';
+import { removeCommentMutation } from './comments/mutations/remove-comment.mutation.js';
 
 export type MutationContext = {
   repository: Repositories;
@@ -29,6 +35,8 @@ export const createResolvers = (): Resolvers => ({
     users: getUsersQuery,
     post: getPostQuery,
     posts: getPostsQuery,
+    comment: getCommentQuery,
+    comments: getCommentsQuery,
   },
   Mutation: {
     // GRAPHQL_MUTATIONS
@@ -38,11 +46,17 @@ export const createResolvers = (): Resolvers => ({
     addPost: addPostMutation,
     editPost: editPostMutation,
     removePost: removePostMutation,
+    addComment: addCommentMutation,
+    editComment: editCommentMutation,
+    removeComment: removeCommentMutation,
   },
   User: {
     posts: getUserPostsQuery,
   },
   Post: {
     user: getPostCreatorQuery,
+  },
+  Comment: {
+    post: getCommentPostQuery,
   },
 });

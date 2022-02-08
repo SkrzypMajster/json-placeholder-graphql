@@ -31,6 +31,23 @@ export type AddressInput = {
   zipcode: Scalars['String'];
 };
 
+export type Comment = {
+  __typename?: 'Comment';
+  body: Scalars['String'];
+  email: Scalars['String'];
+  id: Scalars['Int'];
+  name: Scalars['String'];
+  post?: Maybe<Post>;
+  postId: Scalars['Int'];
+};
+
+export type CommentInput = {
+  body: Scalars['String'];
+  email: Scalars['String'];
+  name: Scalars['String'];
+  postId: Scalars['Int'];
+};
+
 export type Company = {
   __typename?: 'Company';
   bs: Scalars['String'];
@@ -57,12 +74,19 @@ export type CoordinatesInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addComment?: Maybe<Comment>;
   addPost?: Maybe<Post>;
   addUser?: Maybe<User>;
+  editComment?: Maybe<Comment>;
   editPost?: Maybe<Post>;
   editUser?: Maybe<User>;
+  removeComment?: Maybe<Comment>;
   removePost?: Maybe<Post>;
   removeUser?: Maybe<User>;
+};
+
+export type MutationAddCommentArgs = {
+  comment: CommentInput;
 };
 
 export type MutationAddPostArgs = {
@@ -73,6 +97,11 @@ export type MutationAddUserArgs = {
   user: UserInput;
 };
 
+export type MutationEditCommentArgs = {
+  comment: CommentInput;
+  id: Scalars['Int'];
+};
+
 export type MutationEditPostArgs = {
   id: Scalars['Int'];
   post: PostInput;
@@ -81,6 +110,10 @@ export type MutationEditPostArgs = {
 export type MutationEditUserArgs = {
   id: Scalars['Int'];
   user: UserInput;
+};
+
+export type MutationRemoveCommentArgs = {
+  id: Scalars['Int'];
 };
 
 export type MutationRemovePostArgs = {
@@ -108,10 +141,16 @@ export type PostInput = {
 
 export type Query = {
   __typename?: 'Query';
+  comment?: Maybe<Comment>;
+  comments: Array<Comment>;
   post?: Maybe<Post>;
   posts: Array<Post>;
   user?: Maybe<User>;
   users: Array<User>;
+};
+
+export type QueryCommentArgs = {
+  id: Scalars['Int'];
 };
 
 export type QueryPostArgs = {
@@ -220,6 +259,8 @@ export type ResolversTypes = {
   Address: ResolverTypeWrapper<Address>;
   AddressInput: AddressInput;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  Comment: ResolverTypeWrapper<Comment>;
+  CommentInput: CommentInput;
   Company: ResolverTypeWrapper<Company>;
   CompanyInput: CompanyInput;
   Coordinates: ResolverTypeWrapper<Coordinates>;
@@ -239,6 +280,8 @@ export type ResolversParentTypes = {
   Address: Address;
   AddressInput: AddressInput;
   Boolean: Scalars['Boolean'];
+  Comment: Comment;
+  CommentInput: CommentInput;
   Company: Company;
   CompanyInput: CompanyInput;
   Coordinates: Coordinates;
@@ -265,6 +308,19 @@ export type AddressResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type CommentResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Comment'] = ResolversParentTypes['Comment']
+> = {
+  body?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  post?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType>;
+  postId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type CompanyResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Company'] = ResolversParentTypes['Company']
@@ -288,6 +344,12 @@ export type MutationResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
 > = {
+  addComment?: Resolver<
+    Maybe<ResolversTypes['Comment']>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationAddCommentArgs, 'comment'>
+  >;
   addPost?: Resolver<
     Maybe<ResolversTypes['Post']>,
     ParentType,
@@ -300,6 +362,12 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationAddUserArgs, 'user'>
   >;
+  editComment?: Resolver<
+    Maybe<ResolversTypes['Comment']>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationEditCommentArgs, 'comment' | 'id'>
+  >;
   editPost?: Resolver<
     Maybe<ResolversTypes['Post']>,
     ParentType,
@@ -311,6 +379,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationEditUserArgs, 'id' | 'user'>
+  >;
+  removeComment?: Resolver<
+    Maybe<ResolversTypes['Comment']>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationRemoveCommentArgs, 'id'>
   >;
   removePost?: Resolver<
     Maybe<ResolversTypes['Post']>,
@@ -342,6 +416,8 @@ export type QueryResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
 > = {
+  comment?: Resolver<Maybe<ResolversTypes['Comment']>, ParentType, ContextType, RequireFields<QueryCommentArgs, 'id'>>;
+  comments?: Resolver<Array<ResolversTypes['Comment']>, ParentType, ContextType>;
   post?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType, RequireFields<QueryPostArgs, 'id'>>;
   posts?: Resolver<Array<ResolversTypes['Post']>, ParentType, ContextType>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
@@ -366,6 +442,7 @@ export type UserResolvers<
 
 export type Resolvers<ContextType = any> = {
   Address?: AddressResolvers<ContextType>;
+  Comment?: CommentResolvers<ContextType>;
   Company?: CompanyResolvers<ContextType>;
   Coordinates?: CoordinatesResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
