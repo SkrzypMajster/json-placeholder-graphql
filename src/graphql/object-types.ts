@@ -1,4 +1,12 @@
-import { GraphQLObjectType, GraphQLInputObjectType, GraphQLNonNull, GraphQLString, GraphQLInt } from 'graphql';
+import {
+  GraphQLObjectType,
+  GraphQLInputObjectType,
+  GraphQLNonNull,
+  GraphQLString,
+  GraphQLInt,
+  GraphQLList,
+} from 'graphql';
+import { PostsRepository, UsersRepository } from '../repository';
 
 export const CoordinatesType = new GraphQLObjectType({
   name: 'Coordinates',
@@ -71,6 +79,16 @@ export const UserType = new GraphQLObjectType({
     phone: { type: new GraphQLNonNull(GraphQLString) },
     website: { type: new GraphQLNonNull(GraphQLString) },
     company: { type: new GraphQLNonNull(CompanyDataType) },
+    posts: {
+      type: new GraphQLList(PostType),
+      resolve: (user: any, _args: any, context: any) => {
+        const userId = user.id;
+
+        const postsRepository = context.repository.posts as PostsRepository;
+
+        return postsRepository.getList({ userId });
+      },
+    },
   }),
 });
 
@@ -84,5 +102,32 @@ export const AddUserPayloadType = new GraphQLInputObjectType({
     phone: { type: new GraphQLNonNull(GraphQLString) },
     website: { type: new GraphQLNonNull(GraphQLString) },
     company: { type: new GraphQLNonNull(CompanyDataInputType) },
+  }),
+});
+
+export const PostType: any = new GraphQLObjectType({
+  name: 'Post',
+  description: 'This represents a post',
+  fields: () => ({
+    userId: { type: new GraphQLNonNull(GraphQLInt) },
+    id: { type: new GraphQLNonNull(GraphQLInt) },
+    title: { type: new GraphQLNonNull(GraphQLString) },
+    body: { type: new GraphQLNonNull(GraphQLString) },
+    user: {
+      type: UserType,
+      resolve: async (post: any, _args: any, context: any) => {
+        const usersRepository = context.repository.users as UsersRepository;
+        return usersRepository.find(post.userId);
+      },
+    },
+  }),
+});
+
+export const MutatePostInputType = new GraphQLInputObjectType({
+  name: 'MutatePostInput',
+  fields: () => ({
+    userId: { type: new GraphQLNonNull(GraphQLInt) },
+    title: { type: new GraphQLNonNull(GraphQLString) },
+    body: { type: new GraphQLNonNull(GraphQLString) },
   }),
 });
