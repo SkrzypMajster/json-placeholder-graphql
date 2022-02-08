@@ -10,7 +10,7 @@ loadEnvironmentVariables();
   const { PORT } = process.env;
 
   // Setup In-memory database
-  const db = await createInMemoryDatabase();
+  await createInMemoryDatabase();
 
   // Application routing
   app.use('/', (req: Request, res: Response, next: NextFunction) => {
