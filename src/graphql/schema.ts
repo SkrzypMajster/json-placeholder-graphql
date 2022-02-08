@@ -2,7 +2,7 @@ import { GraphQLSchema, GraphQLObjectType, GraphQLList, GraphQLInt, GraphQLNonNu
 import { Post, User } from 'integration/json-placeholder/json-placeholder.types.js';
 
 import { PostsRepository, UsersRepository } from '../repository/index.js';
-import { AddUserPayloadType, MutatePostInputType, PostType, UserType } from './object-types.js';
+import { MutateUserInputType, MutatePostInputType, PostType, UserType } from './object-types.js';
 
 const RootQueryType = new GraphQLObjectType({
   name: 'Query',
@@ -57,7 +57,7 @@ const RootMutationType = new GraphQLObjectType({
       type: UserType,
       description: 'Add a user',
       args: {
-        user: { type: new GraphQLNonNull(AddUserPayloadType) },
+        user: { type: new GraphQLNonNull(MutateUserInputType) },
       },
       resolve: async (_user, { user }: { user: Omit<User, 'id'> }, context) => {
         const usersRepository = context.repository.users as UsersRepository;
@@ -69,7 +69,7 @@ const RootMutationType = new GraphQLObjectType({
       description: 'Edit a user',
       args: {
         id: { type: new GraphQLNonNull(GraphQLInt) },
-        user: { type: new GraphQLNonNull(AddUserPayloadType) },
+        user: { type: new GraphQLNonNull(MutateUserInputType) },
       },
       resolve: async (_user, { id, user }: { id: number; user: Omit<User, 'id'> }, context) => {
         const usersRepository = context.repository.users as UsersRepository;
