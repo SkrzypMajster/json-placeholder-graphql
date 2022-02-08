@@ -3,16 +3,26 @@ import { Low } from 'lowdb';
 import { Database } from '../database.js';
 import { Post } from '../integration/json-placeholder/json-placeholder.types.js';
 
+type PostsListFilters = {
+  userId: number;
+};
+
 export class PostsRepository {
   /* eslint-disable-next-line no-useless-constructor */
   constructor(private db: Low<Database>) {}
 
-  getList(): Post[] {
+  getList(filters: PostsListFilters | null = null): Post[] {
     if (!this.db.data) {
       return [];
     }
 
-    return this.db.data.posts;
+    const posts = this.db.data.posts;
+
+    if (filters?.userId) {
+      return posts.filter((post) => post.userId === filters.userId);
+    }
+
+    return posts;
   }
 
   find(id: number): Post | null {
