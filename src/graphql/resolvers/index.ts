@@ -1,3 +1,5 @@
+import { Resolvers } from '../types/index.js';
+
 export type MutationContext = {
   repositories: any;
 };
@@ -6,7 +8,7 @@ export type QueryContext = {
   repositories: any;
 };
 
-export const createResolvers = () => {
+export const createResolvers = (): Resolvers => {
   // Provide resolver functions for your schema fields
   const resolvers = {
     Query: {
