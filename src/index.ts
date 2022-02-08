@@ -1,6 +1,9 @@
-import express, { Application, Request, Response, NextFunction } from 'express';
+import express, { Application } from 'express';
+import { graphqlHTTP } from 'express-graphql';
 import { config as loadEnvironmentVariables } from 'dotenv';
+
 import { createInMemoryDatabase } from './database.js';
+import { schema } from './graphql/schema.js';
 
 loadEnvironmentVariables();
 
@@ -10,12 +13,10 @@ loadEnvironmentVariables();
   const { PORT } = process.env;
 
   // Setup In-memory database
-  await createInMemoryDatabase();
+  const db = await createInMemoryDatabase();
 
-  // Application routing
-  app.use('/', (req: Request, res: Response, next: NextFunction) => {
-    res.status(200).send({ data: 'Hello from Ornio AS' });
-  });
+  // GraphQL initialization
+  app.use('/graphql', graphqlHTTP({ schema, graphiql: true, context: { db } }));
 
   // Start server
   app.listen(PORT, () => console.log(`Server is listening on port ${PORT}!`));
