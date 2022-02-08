@@ -38,7 +38,12 @@ export const createInMemoryDatabase = async (): Promise<Low<Database>> => {
   return db;
 };
 
-export const createRepository = (db: Low<Database>) => ({
+export type Repositories = {
+  users: UsersRepository;
+  posts: PostsRepository;
+};
+
+export const createRepository = (db: Low<Database>): Repositories => ({
   users: new UsersRepository(db),
   posts: new PostsRepository(db),
 });
