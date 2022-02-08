@@ -2,7 +2,7 @@ import { JSONFile, Low, Memory } from 'lowdb';
 
 import { JsonPlaceholderService } from './integration/json-placeholder/json-placeholder.service.js';
 import { Album, Photo, Post, Todo, User, Comment } from './integration/json-placeholder/json-placeholder.types.js';
-import { UsersRepository } from './repository/user.repository.js';
+import { UsersRepository, PostsRepository } from './repository/index.js';
 
 export type Database = {
   albums: Album[];
@@ -40,4 +40,5 @@ export const createInMemoryDatabase = async (): Promise<Low<Database>> => {
 
 export const createRepository = (db: Low<Database>) => ({
   users: new UsersRepository(db),
+  posts: new PostsRepository(db),
 });
