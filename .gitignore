@@ -6,6 +6,7 @@
 # production
 build
 /data
+database.json
 
 # misc
 .DS_Store
