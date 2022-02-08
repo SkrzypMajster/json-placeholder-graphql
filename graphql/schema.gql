@@ -37,6 +37,15 @@ type Post {
     user: User
 }
 
+type Comment {
+    postId: Int!
+    id: Int!
+    name: String!
+    email: String!
+    body: String!
+    post: Post
+}
+
 # Input types for mutations
 input CoordinatesInput {
     lat: String!
@@ -73,6 +82,13 @@ input PostInput {
     body: String!
 }
 
+input CommentInput {
+    postId: Int!
+    name: String!
+    email: String!
+    body: String!
+}
+
 # Queries and mutations
 
 type Query {
@@ -80,6 +96,8 @@ type Query {
     user(id: Int!): User
     posts: [Post!]!
     post(id: Int!): Post
+    comments: [Comment!]!
+    comment(id: Int!): Comment
 }
 
 type Mutation {
@@ -89,4 +107,7 @@ type Mutation {
     addPost(post: PostInput!): Post
     editPost(id: Int!, post: PostInput!): Post
     removePost(id: Int!): Post
+    addComment(comment: CommentInput!): Comment
+    editComment(id: Int!, comment: CommentInput!): Comment
+    removeComment(id: Int!): Comment
 }
