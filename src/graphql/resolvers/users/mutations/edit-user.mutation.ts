@@ -1,12 +1,13 @@
 import { MutationContext } from '../../index.js';
+import { UserInput } from '../../../types';
 
 type EditUserMutationArgs = {
   id: number;
-  user: any;
+  user: UserInput;
 };
 
 export const editUserMutation = async (
-  parent: any,
+  parent: {},
   { id, user }: EditUserMutationArgs,
   { repository }: MutationContext
 ) => {

@@ -5,7 +5,7 @@ type RemoveUserMutationArgs = {
 };
 
 export const removeUserMutation = async (
-  parent: any,
+  parent: {},
   { id }: RemoveUserMutationArgs,
   { repository }: MutationContext
 ) => {

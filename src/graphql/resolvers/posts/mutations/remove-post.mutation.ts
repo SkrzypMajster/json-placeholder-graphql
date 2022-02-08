@@ -5,7 +5,7 @@ type RemovePostMutationArgs = {
 };
 
 export const removePostMutation = async (
-  parent: any,
+  parent: {},
   { id }: RemovePostMutationArgs,
   { repository }: MutationContext
 ) => {

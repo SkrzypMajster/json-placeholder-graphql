@@ -4,7 +4,7 @@ type GetUserQueryArgs = {
   id: number;
 };
 
-export const getUserQuery = async (parent: any, { id }: GetUserQueryArgs, { repository }: QueryContext) => {
+export const getUserQuery = async (parent: {}, { id }: GetUserQueryArgs, { repository }: QueryContext) => {
   const usersRepository = repository.users;
 
   return usersRepository.find(id);

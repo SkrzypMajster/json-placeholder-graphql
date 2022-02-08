@@ -1,12 +1,13 @@
 import { MutationContext } from '../../index.js';
+import { PostInput } from '../../../types';
 
 type EditPostMutationArgs = {
   id: number;
-  post: any;
+  post: PostInput;
 };
 
 export const editPostMutation = async (
-  parent: any,
+  parent: {},
   { id, post }: EditPostMutationArgs,
   { repository }: MutationContext
 ) => {
