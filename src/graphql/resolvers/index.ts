@@ -25,6 +25,13 @@ import { getAlbumUserQuery } from './album/queries/get-album-user.query.js';
 import { getAlbumQuery } from './album/queries/get-album.query.js';
 import { getAlbumsQuery } from './album/queries/get-albums.query.js';
 import { getUserAlbumsQuery } from './users/queries/get-user-album.query.js';
+import { addPhotoMutation } from './photos/mutations/add-photo.mutation.js';
+import { editPhotoMutation } from './photos/mutations/edit-photo.mutation.js';
+import { removePhotoMutation } from './photos/mutations/remove-photo.mutation.js';
+import { getPhotoQuery } from './photos/queries/get-photo.query.js';
+import { getPhotosQuery } from './photos/queries/get-photos.query.js';
+import { getPhotoAlbumQuery } from './photos/queries/get-photo-album.query.js';
+import { getAlbumPhotosQuery } from './album/queries/get-album-photos.query.js';
 
 export type MutationContext = {
   repository: Repositories;
@@ -46,6 +53,8 @@ export const createResolvers = (): Resolvers => ({
     comments: getCommentsQuery,
     album: getAlbumQuery,
     albums: getAlbumsQuery,
+    photo: getPhotoQuery,
+    photos: getPhotosQuery,
   },
   Mutation: {
     // GRAPHQL_MUTATIONS
@@ -61,6 +70,9 @@ export const createResolvers = (): Resolvers => ({
     addAlbum: addAlbumMutation,
     editAlbum: editAlbumMutation,
     removeAlbum: removeAlbumMutation,
+    addPhoto: addPhotoMutation,
+    editPhoto: editPhotoMutation,
+    removePhoto: removePhotoMutation,
   },
   User: {
     posts: getUserPostsQuery,
@@ -74,5 +86,9 @@ export const createResolvers = (): Resolvers => ({
   },
   Album: {
     user: getAlbumUserQuery,
+    photos: getAlbumPhotosQuery,
+  },
+  Photo: {
+    album: getPhotoAlbumQuery,
   },
 });
