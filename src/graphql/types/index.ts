@@ -34,6 +34,7 @@ export type AddressInput = {
 export type Album = {
   __typename?: 'Album';
   id: Scalars['Int'];
+  photos?: Maybe<Array<Maybe<Photo>>>;
   title: Scalars['String'];
   user?: Maybe<User>;
   userId: Scalars['Int'];
@@ -89,14 +90,17 @@ export type Mutation = {
   __typename?: 'Mutation';
   addAlbum?: Maybe<Album>;
   addComment?: Maybe<Comment>;
+  addPhoto?: Maybe<Photo>;
   addPost?: Maybe<Post>;
   addUser?: Maybe<User>;
   editAlbum?: Maybe<Album>;
   editComment?: Maybe<Comment>;
+  editPhoto?: Maybe<Photo>;
   editPost?: Maybe<Post>;
   editUser?: Maybe<User>;
   removeAlbum?: Maybe<Album>;
   removeComment?: Maybe<Comment>;
+  removePhoto?: Maybe<Photo>;
   removePost?: Maybe<Post>;
   removeUser?: Maybe<User>;
 };
@@ -107,6 +111,10 @@ export type MutationAddAlbumArgs = {
 
 export type MutationAddCommentArgs = {
   comment: CommentInput;
+};
+
+export type MutationAddPhotoArgs = {
+  photo: PhotoInput;
 };
 
 export type MutationAddPostArgs = {
@@ -127,6 +135,11 @@ export type MutationEditCommentArgs = {
   id: Scalars['Int'];
 };
 
+export type MutationEditPhotoArgs = {
+  id: Scalars['Int'];
+  photo: PhotoInput;
+};
+
 export type MutationEditPostArgs = {
   id: Scalars['Int'];
   post: PostInput;
@@ -145,12 +158,33 @@ export type MutationRemoveCommentArgs = {
   id: Scalars['Int'];
 };
 
+export type MutationRemovePhotoArgs = {
+  id: Scalars['Int'];
+};
+
 export type MutationRemovePostArgs = {
   id: Scalars['Int'];
 };
 
 export type MutationRemoveUserArgs = {
   id: Scalars['Int'];
+};
+
+export type Photo = {
+  __typename?: 'Photo';
+  album?: Maybe<Album>;
+  albumId: Scalars['Int'];
+  id: Scalars['Int'];
+  thumbnailUrl: Scalars['String'];
+  title: Scalars['String'];
+  url: Scalars['String'];
+};
+
+export type PhotoInput = {
+  albumId: Scalars['Int'];
+  thumbnailUrl: Scalars['String'];
+  title: Scalars['String'];
+  url: Scalars['String'];
 };
 
 export type Post = {
@@ -174,6 +208,8 @@ export type Query = {
   albums: Array<Album>;
   comment?: Maybe<Comment>;
   comments: Array<Comment>;
+  photo?: Maybe<Photo>;
+  photos: Array<Photo>;
   post?: Maybe<Post>;
   posts: Array<Post>;
   user?: Maybe<User>;
@@ -185,6 +221,10 @@ export type QueryAlbumArgs = {
 };
 
 export type QueryCommentArgs = {
+  id: Scalars['Int'];
+};
+
+export type QueryPhotoArgs = {
   id: Scalars['Int'];
 };
 
@@ -305,6 +345,8 @@ export type ResolversTypes = {
   CoordinatesInput: CoordinatesInput;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Mutation: ResolverTypeWrapper<{}>;
+  Photo: ResolverTypeWrapper<Photo>;
+  PhotoInput: PhotoInput;
   Post: ResolverTypeWrapper<Post>;
   PostInput: PostInput;
   Query: ResolverTypeWrapper<{}>;
@@ -328,6 +370,8 @@ export type ResolversParentTypes = {
   CoordinatesInput: CoordinatesInput;
   Int: Scalars['Int'];
   Mutation: {};
+  Photo: Photo;
+  PhotoInput: PhotoInput;
   Post: Post;
   PostInput: PostInput;
   Query: {};
@@ -353,6 +397,7 @@ export type AlbumResolvers<
   ParentType extends ResolversParentTypes['Album'] = ResolversParentTypes['Album']
 > = {
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  photos?: Resolver<Maybe<Array<Maybe<ResolversTypes['Photo']>>>, ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   userId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -407,6 +452,12 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationAddCommentArgs, 'comment'>
   >;
+  addPhoto?: Resolver<
+    Maybe<ResolversTypes['Photo']>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationAddPhotoArgs, 'photo'>
+  >;
   addPost?: Resolver<
     Maybe<ResolversTypes['Post']>,
     ParentType,
@@ -430,6 +481,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationEditCommentArgs, 'comment' | 'id'>
+  >;
+  editPhoto?: Resolver<
+    Maybe<ResolversTypes['Photo']>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationEditPhotoArgs, 'id' | 'photo'>
   >;
   editPost?: Resolver<
     Maybe<ResolversTypes['Post']>,
@@ -455,6 +512,12 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationRemoveCommentArgs, 'id'>
   >;
+  removePhoto?: Resolver<
+    Maybe<ResolversTypes['Photo']>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationRemovePhotoArgs, 'id'>
+  >;
   removePost?: Resolver<
     Maybe<ResolversTypes['Post']>,
     ParentType,
@@ -467,6 +530,19 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationRemoveUserArgs, 'id'>
   >;
+};
+
+export type PhotoResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Photo'] = ResolversParentTypes['Photo']
+> = {
+  album?: Resolver<Maybe<ResolversTypes['Album']>, ParentType, ContextType>;
+  albumId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  thumbnailUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  url?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type PostResolvers<
@@ -489,6 +565,8 @@ export type QueryResolvers<
   albums?: Resolver<Array<ResolversTypes['Album']>, ParentType, ContextType>;
   comment?: Resolver<Maybe<ResolversTypes['Comment']>, ParentType, ContextType, RequireFields<QueryCommentArgs, 'id'>>;
   comments?: Resolver<Array<ResolversTypes['Comment']>, ParentType, ContextType>;
+  photo?: Resolver<Maybe<ResolversTypes['Photo']>, ParentType, ContextType, RequireFields<QueryPhotoArgs, 'id'>>;
+  photos?: Resolver<Array<ResolversTypes['Photo']>, ParentType, ContextType>;
   post?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType, RequireFields<QueryPostArgs, 'id'>>;
   posts?: Resolver<Array<ResolversTypes['Post']>, ParentType, ContextType>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'id'>>;
@@ -519,6 +597,7 @@ export type Resolvers<ContextType = any> = {
   Company?: CompanyResolvers<ContextType>;
   Coordinates?: CoordinatesResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  Photo?: PhotoResolvers<ContextType>;
   Post?: PostResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
