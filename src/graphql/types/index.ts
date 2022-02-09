@@ -31,6 +31,19 @@ export type AddressInput = {
   zipcode: Scalars['String'];
 };
 
+export type Album = {
+  __typename?: 'Album';
+  id: Scalars['Int'];
+  title: Scalars['String'];
+  user?: Maybe<User>;
+  userId: Scalars['Int'];
+};
+
+export type AlbumInput = {
+  title: Scalars['String'];
+  userId: Scalars['Int'];
+};
+
 export type Comment = {
   __typename?: 'Comment';
   body: Scalars['String'];
@@ -74,15 +87,22 @@ export type CoordinatesInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addAlbum?: Maybe<Album>;
   addComment?: Maybe<Comment>;
   addPost?: Maybe<Post>;
   addUser?: Maybe<User>;
+  editAlbum?: Maybe<Album>;
   editComment?: Maybe<Comment>;
   editPost?: Maybe<Post>;
   editUser?: Maybe<User>;
+  removeAlbum?: Maybe<Album>;
   removeComment?: Maybe<Comment>;
   removePost?: Maybe<Post>;
   removeUser?: Maybe<User>;
+};
+
+export type MutationAddAlbumArgs = {
+  album: AlbumInput;
 };
 
 export type MutationAddCommentArgs = {
@@ -95,6 +115,11 @@ export type MutationAddPostArgs = {
 
 export type MutationAddUserArgs = {
   user: UserInput;
+};
+
+export type MutationEditAlbumArgs = {
+  album: AlbumInput;
+  id: Scalars['Int'];
 };
 
 export type MutationEditCommentArgs = {
@@ -110,6 +135,10 @@ export type MutationEditPostArgs = {
 export type MutationEditUserArgs = {
   id: Scalars['Int'];
   user: UserInput;
+};
+
+export type MutationRemoveAlbumArgs = {
+  id: Scalars['Int'];
 };
 
 export type MutationRemoveCommentArgs = {
@@ -141,12 +170,18 @@ export type PostInput = {
 
 export type Query = {
   __typename?: 'Query';
+  album?: Maybe<Album>;
+  albums: Array<Album>;
   comment?: Maybe<Comment>;
   comments: Array<Comment>;
   post?: Maybe<Post>;
   posts: Array<Post>;
   user?: Maybe<User>;
   users: Array<User>;
+};
+
+export type QueryAlbumArgs = {
+  id: Scalars['Int'];
 };
 
 export type QueryCommentArgs = {
@@ -164,6 +199,7 @@ export type QueryUserArgs = {
 export type User = {
   __typename?: 'User';
   address: Address;
+  albums?: Maybe<Array<Maybe<Album>>>;
   company: Company;
   email: Scalars['String'];
   id: Scalars['Int'];
@@ -258,6 +294,8 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = {
   Address: ResolverTypeWrapper<Address>;
   AddressInput: AddressInput;
+  Album: ResolverTypeWrapper<Album>;
+  AlbumInput: AlbumInput;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Comment: ResolverTypeWrapper<Comment>;
   CommentInput: CommentInput;
@@ -279,6 +317,8 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   Address: Address;
   AddressInput: AddressInput;
+  Album: Album;
+  AlbumInput: AlbumInput;
   Boolean: Scalars['Boolean'];
   Comment: Comment;
   CommentInput: CommentInput;
@@ -305,6 +345,17 @@ export type AddressResolvers<
   street?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   suite?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   zipcode?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type AlbumResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Album'] = ResolversParentTypes['Album']
+> = {
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  userId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -344,6 +395,12 @@ export type MutationResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
 > = {
+  addAlbum?: Resolver<
+    Maybe<ResolversTypes['Album']>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationAddAlbumArgs, 'album'>
+  >;
   addComment?: Resolver<
     Maybe<ResolversTypes['Comment']>,
     ParentType,
@@ -362,6 +419,12 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationAddUserArgs, 'user'>
   >;
+  editAlbum?: Resolver<
+    Maybe<ResolversTypes['Album']>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationEditAlbumArgs, 'album' | 'id'>
+  >;
   editComment?: Resolver<
     Maybe<ResolversTypes['Comment']>,
     ParentType,
@@ -379,6 +442,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationEditUserArgs, 'id' | 'user'>
+  >;
+  removeAlbum?: Resolver<
+    Maybe<ResolversTypes['Album']>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationRemoveAlbumArgs, 'id'>
   >;
   removeComment?: Resolver<
     Maybe<ResolversTypes['Comment']>,
@@ -416,6 +485,8 @@ export type QueryResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
 > = {
+  album?: Resolver<Maybe<ResolversTypes['Album']>, ParentType, ContextType, RequireFields<QueryAlbumArgs, 'id'>>;
+  albums?: Resolver<Array<ResolversTypes['Album']>, ParentType, ContextType>;
   comment?: Resolver<Maybe<ResolversTypes['Comment']>, ParentType, ContextType, RequireFields<QueryCommentArgs, 'id'>>;
   comments?: Resolver<Array<ResolversTypes['Comment']>, ParentType, ContextType>;
   post?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType, RequireFields<QueryPostArgs, 'id'>>;
@@ -429,6 +500,7 @@ export type UserResolvers<
   ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']
 > = {
   address?: Resolver<ResolversTypes['Address'], ParentType, ContextType>;
+  albums?: Resolver<Maybe<Array<Maybe<ResolversTypes['Album']>>>, ParentType, ContextType>;
   company?: Resolver<ResolversTypes['Company'], ParentType, ContextType>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -442,6 +514,7 @@ export type UserResolvers<
 
 export type Resolvers<ContextType = any> = {
   Address?: AddressResolvers<ContextType>;
+  Album?: AlbumResolvers<ContextType>;
   Comment?: CommentResolvers<ContextType>;
   Company?: CompanyResolvers<ContextType>;
   Coordinates?: CoordinatesResolvers<ContextType>;
