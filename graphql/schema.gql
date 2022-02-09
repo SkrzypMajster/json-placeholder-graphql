@@ -27,6 +27,7 @@ type User {
     website: String!
     company: Company!
     posts: [Post]
+    albums: [Album]
 }
 
 type Post {
@@ -44,6 +45,13 @@ type Comment {
     email: String!
     body: String!
     post: Post
+}
+
+type Album {
+    userId: Int!
+    id: Int!
+    title: String!
+    user: User
 }
 
 # Input types for mutations
@@ -89,6 +97,11 @@ input CommentInput {
     body: String!
 }
 
+input AlbumInput {
+    userId: Int!
+    title: String!
+}
+
 # Queries and mutations
 
 type Query {
@@ -98,6 +111,8 @@ type Query {
     post(id: Int!): Post
     comments: [Comment!]!
     comment(id: Int!): Comment
+    albums: [Album!]!
+    album(id: Int!): Album
 }
 
 type Mutation {
@@ -110,4 +125,7 @@ type Mutation {
     addComment(comment: CommentInput!): Comment
     editComment(id: Int!, comment: CommentInput!): Comment
     removeComment(id: Int!): Comment
+    addAlbum(album: AlbumInput!): Album
+    editAlbum(id: Int!, album: AlbumInput!): Album
+    removeAlbum(id: Int!): Album
 }

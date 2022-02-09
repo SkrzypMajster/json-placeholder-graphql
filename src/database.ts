@@ -2,7 +2,7 @@ import { JSONFile, Low, Memory } from 'lowdb';
 
 import { JsonPlaceholderService } from './integration/json-placeholder/json-placeholder.service.js';
 import { Album, Photo, Post, Todo, User, Comment } from './integration/json-placeholder/json-placeholder.types.js';
-import { UsersRepository, PostsRepository, CommentsRepository } from './repository/index.js';
+import { UsersRepository, PostsRepository, CommentsRepository, AlbumsRepository } from './repository/index.js';
 
 export type Database = {
   albums: Album[];
@@ -42,10 +42,12 @@ export type Repositories = {
   users: UsersRepository;
   posts: PostsRepository;
   comments: CommentsRepository;
+  albums: AlbumsRepository;
 };
 
 export const createRepository = (db: Low<Database>): Repositories => ({
   users: new UsersRepository(db),
   posts: new PostsRepository(db),
   comments: new CommentsRepository(db),
+  albums: new AlbumsRepository(db),
 });
