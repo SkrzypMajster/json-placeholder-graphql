@@ -52,6 +52,16 @@ type Album {
     id: Int!
     title: String!
     user: User
+    photos: [Photo]
+}
+
+type Photo {
+    albumId: Int!
+    id: Int!
+    title: String!
+    url: String!
+    thumbnailUrl: String!
+    album: Album
 }
 
 # Input types for mutations
@@ -102,6 +112,13 @@ input AlbumInput {
     title: String!
 }
 
+input PhotoInput {
+    albumId: Int!
+    title: String!
+    url: String!
+    thumbnailUrl: String!
+}
+
 # Queries and mutations
 
 type Query {
@@ -113,6 +130,8 @@ type Query {
     comment(id: Int!): Comment
     albums: [Album!]!
     album(id: Int!): Album
+    photos: [Photo!]!
+    photo(id: Int!): Photo
 }
 
 type Mutation {
@@ -128,4 +147,7 @@ type Mutation {
     addAlbum(album: AlbumInput!): Album
     editAlbum(id: Int!, album: AlbumInput!): Album
     removeAlbum(id: Int!): Album
+    addPhoto(photo: PhotoInput!): Photo
+    editPhoto(id: Int!, photo: PhotoInput!): Photo
+    removePhoto(id: Int!): Photo
 }
